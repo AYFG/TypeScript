@@ -36,3 +36,17 @@ const arr3: Array<number> = [123, 456];
 const arr4: [number, number, string] = [123, 345, "hello"];
 // 객체
 const obj: { lat: number; lon: number } = { lat: 37.5, lon: 127.5 };
+
+// js로 변환시 사라지는 부분 4개
+const 콜론: true = true;
+type 타입 = () => true;
+interface 인터페이스 {}
+Array<true>; //제네릭
+// 심화 같은 이름의 함수
+function minus(x: number, y: number): number; // 사라짐
+function minus(x, y) {
+  return x - y;
+}
+// as - 앞의 타입을 강제로 바꿈 & js 변환시 as 사라짐
+let aa = 123;
+aa = "hello" as unknown as number;
