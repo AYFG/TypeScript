@@ -73,3 +73,31 @@ if (span) {
 }
 // ! : 무조건 존재하는, undefined나 null이 아님을 보증함 !비추
 const div = document.querySelector("#div")!;
+
+// 대문자 String은 래퍼 개체
+const str: string = "hello";
+const Str: String = "hell";
+function StrTest(x: string, y: string) {}
+StrTest(str, Str);
+new String(); //여기서 쓰이는 래퍼 개체이므로 타입 지정 할 때는 소문자를 사용해야 한다
+
+// 타입 커스텀 (자동완성도 해줌)
+type World = "world" | "hell";
+const hello: World = "world";
+// 템플릿 리터럴 (타입도 들어갈 수 있다)
+type Greeting = `hello ${World}`;
+// 타입에 or가 들어가서 자동완성을 두 개를 추천해줌
+const temp: Greeting = "hello hell";
+
+let arr5: string[] = [];
+let arr6: Array<string> = [];
+function rest(a, ...args: string[]) {
+  console.log(a, args); // 1,[2,3]
+}
+rest("1", "2", "3");
+
+const tuple2: [string, number] = ["1", 1];
+// 튜플은 개수와 타입이 지정되어있어서 막아준다.
+tuple2[2] = "hello";
+// 그렇지만 push는 막아주지 못한다.
+tuple2.push("hello");
