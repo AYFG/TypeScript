@@ -50,3 +50,26 @@ function minus(x, y) {
 // as - 앞의 타입을 강제로 바꿈 & js 변환시 as 사라짐
 let aa = 123;
 aa = "hello" as unknown as number;
+
+// never
+// tsconfig.json의 설정 중 !noImplicitAny && strictNullChecks가 아니면 any로 나옴
+try {
+  const array = [];
+  // const array: string[] = [];
+  array.push("hello");
+} catch (error) {
+  error;
+}
+// Element타입 F12 = 타입 정의 보기
+const head: Element = document.querySelector("#head");
+console.log(head);
+
+const span = document.querySelector("#span");
+// Element | null 타입이기 때문에 if문이 없으면 null일 수도 있다고 알려준다.
+if (span) {
+  // 오타수정
+  span.innesrHTML = "hello world";
+  console.log(head);
+}
+// ! : 무조건 존재하는, undefined나 null이 아님을 보증함 !비추
+const div = document.querySelector("#div")!;
