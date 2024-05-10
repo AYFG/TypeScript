@@ -143,3 +143,26 @@ type Key4 = (typeof obj2)[keyof typeof obj2]; //as const가 붙어있지 않아 
 
 // 위의 enum을 사용하고 싶어지게했던 복잡한 object 타입 사용은 객체의 값들을 타입으로 사용하여 타입추론이 가능하게 한 것
 type Direction2 = (typeof ObjectDirection2)[keyof typeof ObjectDirection2];
+
+// 간단하게 하고싶으면 A , 객체지향 프로그래밍을 하고싶으면 interface
+type A = { a: string };
+const a2: A = { a: "hello" };
+
+interface B {
+  a: string;
+}
+const b2: B = { a: "hello" };
+
+// union
+function add2(x: string | number, y: string | number): string | number {
+  //
+  return x + y;
+}
+
+type A3 = string & number; // 안되는 intersection
+const a3: A = 1;
+type A4 = { hello: "world" } & { jae: "woong" }; //가능한 intersection
+const a4 = { hello: "world", jae: "woong" }; //intersection(모두 만족해야하는 and)이어서 모든 속성이 다 있어야 한다.
+
+type A5 = { hello: "world" } | { jae: "woong" }; //union(하나만 만족해도 되는 or)이어서 하나만 있어도 가능하다.
+const a5: A5 = { hello: "world", jae: "woong" };
