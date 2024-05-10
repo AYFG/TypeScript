@@ -97,7 +97,49 @@ function rest(a, ...args: string[]) {
 rest("1", "2", "3");
 
 const tuple2: [string, number] = ["1", 1];
-// 튜플은 개수와 타입이 지정되어있어서 막아준다.
+// 튜플은 개수와 타입이 지정되어있어서 추가를 막아준다.
 tuple2[2] = "hello";
 // 그렇지만 push는 막아주지 못한다.
 tuple2.push("hello");
+
+// enum 여러 변수들을 하나의 그룹으로 묶고싶을 때,JS로 변환할 때 남기지 않으려는 목적도 있음 남겨야 한다면 객체를 사용
+const enum EnumDirection {
+  Up = 3,
+  Down = 4,
+  Left = 5,
+  Right = 6,
+}
+const EnumA = EnumDirection.Up;
+const EnumB = EnumDirection.Left;
+
+// 그렇지만 객체는 타입 추론이 값 그대로가 아닌 number로 추론한다.
+const ObjectDirection = {
+  Up: 0,
+  Down: 1,
+  Left: 2,
+  Right: 3,
+};
+// as const : 이 값들을 상수로 사용하고 싶다면 readonly로 값이 고정.
+const ObjectDirection2 = {
+  Up: 0,
+  Down: 1,
+  Left: 2,
+  Right: 3,
+} as const;
+// Enum은 직접 타입으로 사용할 수 있다. dir : up,down,left,right중 하나여야 한다.
+function walk(dir: EnumDirection) {}
+walk(EnumDirection.Left);
+// Object도 직접 타입으로 사용할 수 있지만 사용방법이 까다로워 enum이 쓰고 싶어지는 느낌이 든다.
+type Direction = (typeof ObjectDirection2)[keyof typeof ObjectDirection2];
+function run(dir: Direction) {}
+run(ObjectDirection2.Right);
+// keyof란? 여기서 a,b,c 키만 꺼내오고 싶다.
+const obj2 = { a: "123", b: "hello", c: "world" };
+type Key = keyof obj2; //obj2는 값인데 타입(형식)으로 사용하려 한다.
+type Key2 = keyof typeof obj2;
+// 반대로 값들만 가져오고싶다? as const가 붙어있어야 타입 추론이 가능하다.
+type Key3 = (typeof ObjectDirection2)[keyof typeof ObjectDirection2];
+type Key4 = (typeof obj2)[keyof typeof obj2]; //as const가 붙어있지 않아 타입추론이 string으로 널널하게 되는 모습.obj2에 as const를 붙여보고 다시 Key4에 마우스를 호버해보자
+
+// 위의 enum을 사용하고 싶어지게했던 복잡한 object 타입 사용은 객체의 값들을 타입으로 사용하여 타입추론이 가능하게 한 것
+type Direction2 = (typeof ObjectDirection2)[keyof typeof ObjectDirection2];
