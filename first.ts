@@ -166,3 +166,43 @@ const a4 = { hello: "world", jae: "woong" }; //intersection(모두 만족해야�
 
 type A5 = { hello: "world" } | { jae: "woong" }; //union(하나만 만족해도 되는 or)이어서 하나만 있어도 가능하다.
 const a5: A5 = { hello: "world", jae: "woong" };
+
+//타입 확장
+type Animal = { breath: true };
+type Mammal = Animal & { breed: true };
+type Human = Mammal & { think: true };
+
+interface A6 {
+  breath: true;
+}
+//인터페이스 확장
+interface B2 extends A6 {
+  breed: true;
+}
+const b6: B2 = { breath: true, breed: true };
+const woong: Human = { breath: true, breed: true, think: true };
+
+//인터페이스는 같은 것을 여러 개 선언할 수 있다
+interface A7 {
+  talk: () => void;
+}
+interface A7 {
+  eat: () => void;
+}
+interface A7 {
+  shit: () => void;
+}
+const a7: A7 = { talk() {}, eat() {}, shit() {}, sleep() {} };
+//이렇게 추가도 가능하여 다른 사람이 만든 인터페이스(남의 라이브러리)를 확장하는 것도 가능하다
+interface A7 {
+  sleep: () => void;
+}
+
+// 옛날 네이밍 타입을 변수명 앞에 붙여준다 요즘은 제네릭에만 붙이는 추세, 마우스 올려보면 바로 알 수 있기 때문
+interface IProps {}
+type TAlias = string | number;
+enum EHello {
+  Left,
+  Right,
+}
+const a8: IProps = {};
