@@ -206,3 +206,58 @@ enum EHello {
   Right,
 }
 const a8: IProps = {};
+
+// 타입을 집합으로 생각하자(좁은 타입, 넓은 타입)
+type A8 = string | number; // 넓은 타입
+type B3 = string; //좁은 타입
+type C = string & number; // 없는 타입 공집합
+// 객체는 상세할수록 좁다
+type A9 = { name: string };
+type B4 = { age: number };
+type AB2 = A9 | B4;
+type C1 = { name: string; age: number }; //좁은 타입
+
+const ab: AB2 = { name: "woong" }; //넓은 타입
+const c1: C1 = { name: "woong", age: 10 }; // 좁은 타입
+const c2: C1 = ab;
+const c3: C1 = { name: "woong", age: 10, married: false }; // 잉여 속성 검사 에러
+
+// 잉여 속성 검사
+interface A10 {
+  a: string;
+}
+const obj3 = { a: "hello", b: "world" };
+const obj4: A10 = { a: "hello", b: "world" }; //직접 넣어주면 에러가 나오는데 변수를 한 번 거치면 잉여 검사를 안해줌
+// const obj4: A10 = obj3;
+
+// void(빈,공허한) : 리턴 값을 넣으면 안되는 함수
+// void 종류 세가지 1.함수 보이드 function test():void 2.매개변수 보이드 test:()=>void 3.매개변수 보이드 function test(:()=>void)
+function a11(): void {
+  return "3";
+  return undefined; // undefined는 가능
+  return null;
+}
+const b11 = a11();
+
+interface Human2 {
+  //메서드의 void는 리턴값이 존재할 수 있음 그렇지만 리턴값 무시(에러만 안남)
+  talk: () => void;
+}
+const human2: Human2 = {
+  talk() {
+    return undefined;
+    return "abc";
+  },
+};
+// 매개변수의 콜백의 void는 리턴값이 존재할 수 있음 그렇지만 리턴값 무시(에러만 안남)
+function a12(callback: () => void): void {}
+a12(() => {
+  return "3";
+});
+// declare(선언) : 리턴없이 타입만 선언할 때
+declare function forEach(arr: number[], callback: (el: number) => void): void;
+let target: number[] = [];
+forEach([1, 2, 3], (el) => {
+  target.push(el);
+});
+forEach([1, 2, 3], (el) => target.push(el));
