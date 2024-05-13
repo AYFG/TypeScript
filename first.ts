@@ -261,3 +261,16 @@ forEach([1, 2, 3], (el) => {
   target.push(el);
 });
 forEach([1, 2, 3], (el) => target.push(el));
+
+// any를 쓸 바엔 as unknown을 쓴다
+// const a13: any = human2.talk(); // any는 타입 검사를 포기함
+// a13.method();
+const a13: unknown = human2.talk(); // unknown도 없는게 베스트이긴 하지만 당장 타입을 정확히 모를 때
+(a13 as Human2).talk();
+
+// unknown이 가장 흔하게 나오는 경우
+try {
+} catch (error) {
+  error.message; // 'error'은(는) 'unknown' 형식입니다.
+  (error as Error).message;
+}
