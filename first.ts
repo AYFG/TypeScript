@@ -274,3 +274,86 @@ try {
   error.message; // 'error'은(는) 'unknown' 형식입니다.
   (error as Error).message;
 }
+
+// 타입 가드, 타입 좁히기
+function numOrStr(a: number | string) {
+  a.toFixed(1); //string이 섞여서 number 메소드 사용이 안된다.
+  (a as number).toFixed(1); // 위험한 코드 , unknown일 때, 남이 만든 타입이 틀렸을 때 어쩔 수 없이 as를 사용한다.
+  if (typeof a === "number") {
+    a.toFixed(1); // 올바른 사용방법
+  } else {
+    //ts가 else도 파악하여 string일 경우를 else로 사용하여 쓸 수 있다.
+    a.charAt(3);
+  }
+  if (typeof a === "string") {
+    a.charAt(3);
+  }
+  if (typeof a === "boolean") {
+    a.charAt(3); // 절대 사용될 수 없는 코드는 never로 나온다.
+  }
+}
+numOrStr("123"); // as를 사용했는데 이렇게 실수하면 에러가 난다.
+numOrStr(1);
+// 숫자와 숫자배열 타입 좁히기
+function numOrNumArray(a: number | number[]) {
+  if (Array.isArray(a)) {
+    //배열을 확인하는법 Array.isArray()
+    //number[]
+    a.concat(4);
+  } else {
+    //number
+    a.toFixed(3);
+  }
+}
+numOrNumArray(123);
+numOrNumArray([1, 2, 3]);
+
+//클래스 타입 좁히기
+class A14 {
+  aaa() {}
+}
+class B14 {
+  bbb() {}
+}
+function aOrB(param: A14 | B14) {
+  // 인스턴스의 타이핑은 클래스 이름으로 한다.
+  if (param instanceof A14) {
+    param.aaa();
+  }
+}
+aOrB(A14()); // X 'typeof A14' 형식의 값은 호출할 수 없습니다. 'new'를 포함하려고 했습니까?
+aOrB(new A14());
+aOrB(new B14());
+
+// 타입 체킹
+type B15 = { type: "b"; bbb: string };
+type C15 = { type: "c"; ccc: string };
+// type D15 = { type: "c"; ccc: string }; // 타입 추론을 확실하게 해준다.
+type D15 = { type: "d"; ddd: string };
+
+function typeCheck(a: B15 | C15 | D15) {
+  if (a.type === "b") {
+    a.bbb;
+  } else if (a.type === "c") {
+    a.ccc;
+  } else {
+    a.ddd;
+  }
+  if ("bbb" in a) {
+    a.bbb;
+  } else if ("ccc" in a) {
+    a.ccc;
+  } else {
+    a.ddd;
+  }
+}
+
+// 객체 만들 때 좋은 습관 - 미리 타입 달아두기
+const human3 = { type: "human" };
+const dog3 = { type: "dog" };
+const cat3 = { type: "cat" };
+// 만약 객체에 타입을 달아두지 않았다면 기본키로 쓸 것을 찾아쓴다.
+if ("말하기" in a) {
+} else if ("멍멍" in a) {
+} else {
+}
