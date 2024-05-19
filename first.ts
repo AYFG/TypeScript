@@ -357,3 +357,45 @@ if ("말하기" in a) {
 } else if ("멍멍" in a) {
 } else {
 }
+
+interface Cat {
+  meow: number;
+}
+interface Dog {
+  bow: number;
+}
+// is가 있으면 커스텀 타입가드 함수
+function catOrDog(a: Cat | Dog): a is Dog {
+  if ((a as Cat).meow) {
+    return false;
+  }
+  return true;
+}
+
+function pet(a: Cat | Dog) {
+  if (catOrDog(a)) {
+    console.log(a.bow);
+  }
+  if ("meow" in a) {
+    console.log(a.meow);
+  }
+}
+
+const isRejected = (
+  input: PromiseSettledResult<unknown>
+): input is PromiseRejectedResult => {
+  return input.status === "rejected";
+};
+const isFulfilled = <T>(
+  input: PromiseSettledResult<T>
+): input is PromiseFulfilledResult<T> => {
+  return input.status === "fulfilled";
+};
+
+const promises = await Promise.allSettled([
+  Promise.resolve("a"),
+  Promise.resolve("b"),
+]);
+const errors = promises.filter(isRejected);
+
+export {};
