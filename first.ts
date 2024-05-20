@@ -425,3 +425,62 @@ const aaa: AAA = { a: 3, b: 5, c: 2, d: 123 };
 type BB = "Human" | "Mammal" | "Animal"; // interface는 | & 가 안된다
 type BBB = { [key in BB]: BB }; // mapped type
 const bbb: BBB = { Human: "Animal", Mammal: "Human", Animal: "Mammal" };
+
+//클래스 이름은 그 자체로 타입이 될 수 있다
+class Alpha {
+  private a: string = "123"; // TS 제공 private 사용 추천
+  #b: number = 123; // JS 제공 private
+  method() {
+    console.log(this.a, this.#b);
+  }
+  constructor(a: string, b: number = 123) {}
+}
+type alpha2 = Alpha;
+const alpha = new Alpha("123");
+const bravo: typeof Alpha = Alpha;
+
+// implements,private,protected js 변환하면 전부 사라진다
+interface Alren {
+  readonly a: string;
+  b: string;
+}
+class Bond implements Alren {
+  // private a: false; //클래스의 모양을 interface로 통제한다.
+  private a: string;
+  protected b: string;
+  // public
+  c: string = "wow";
+  method() {
+    console.log(this.a);
+    console.log(this.b);
+  }
+}
+class Chali extends Bond {
+  method() {
+    console.log(this.a); // private는 상속 받아도 사용 불가
+    console.log(this.b); // protected는 상속 사용 가능
+  }
+}
+// 인스턴스에서는 private,protected 둘 다 사용 불가
+new Chali().a; // private 속성이 있어 Bond class 에서만 사용할 수 있다
+new Chali().b; // private과 다른 점은 상속 받았을 때 사용이 가능하다
+new Chali().c;
+
+// 추상 클래스
+abstract class Bond2 {
+  private readonly a: string = "123";
+  b: string = "world";
+  c: string = "wow";
+
+  abstract method(): void; // 추상 메소드는 반드시 구현에서 사용해줘야한다
+}
+//추상 클래스의 구현
+class Chali2 extends Bond2 {
+  // 비추상 클래스 'Chali2'은(는) 'Bond2' 클래스에서 상속된 추상 멤버 'method'을(를) 구현하지 않습니다
+  // 추상 클래스 안에 추상 메소드를 선언했다면 상속 받은 구현 단계에서 꼭 사용해야 하고 하지 앉으면 에러가 난다.
+  method() {
+    console.log(this.a);
+    console.log(this.b);
+    console.log(this.c);
+  }
+}

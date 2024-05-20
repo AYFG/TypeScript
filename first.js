@@ -1,4 +1,9 @@
-"use strict";
+var __classPrivateFieldGet = (this && this.__classPrivateFieldGet) || function (receiver, state, kind, f) {
+    if (kind === "a" && !f) throw new TypeError("Private accessor was defined without a getter");
+    if (typeof state === "function" ? receiver !== state || !f : !state.has(receiver)) throw new TypeError("Cannot read private member from an object whose class did not declare it");
+    return kind === "m" ? f : kind === "a" ? f.call(receiver) : f ? f.value : state.get(receiver);
+};
+var _Alpha_b;
 const a = "5";
 const b = 7;
 const c = true;
@@ -268,3 +273,62 @@ function pet(a) {
         console.log(a.meow);
     }
 }
+const isRejected = (input) => {
+    return input.status === "rejected";
+};
+const isFulfilled = (input) => {
+    return input.status === "fulfilled";
+};
+const promises = await Promise.allSettled([
+    Promise.resolve("a"),
+    Promise.resolve("b"),
+]);
+const errors = promises.filter(isRejected);
+// v4.8
+const x = "hello";
+const y = "hi"; // {}, Object 는 모든 타입(null과 undefined는 제외)
+const xx = "hi"; // 객체
+const yy = { hello: "world" }; // object 지양, interface | type | class 사용 권장
+const z = "hi";
+// unknown = {} | null | undefined
+if (z) {
+    z; // const z: {}
+}
+const aaaa = { a: "hello", b: "world" };
+aaaa.a = "123"; // 읽기 전용 속성 부여로 바꾸지 못하게 막아줌
+const aaa = { a: 3, b: 5, c: 2, d: 123 };
+const bbb = { Human: "Animal", Mammal: "Human", Animal: "Mammal" };
+//클래스 이름은 그 자체로 타입이 될 수 있다
+class Alpha {
+    method() {
+        console.log(this.a, __classPrivateFieldGet(this, _Alpha_b, "f"));
+    }
+    constructor(a, b = 123) {
+        this.a = "123"; // TS 제공 private 사용 추천
+        _Alpha_b.set(this, 123); // JS 제공 private
+    }
+}
+_Alpha_b = new WeakMap();
+const alpha = new Alpha("123");
+const bravo = Alpha;
+class Bond {
+    constructor() {
+        // public
+        this.c = "wow";
+    }
+    method() {
+        console.log(this.a);
+        console.log(this.b);
+    }
+}
+class Chali extends Bond {
+    method() {
+        console.log(this.a); // private는 상속 받아도 사용 불가
+        console.log(this.b); // protected는 상속 사용 가능
+    }
+}
+// 인스턴스에서는 private,protected 둘 다 사용 불가
+new Chali().a; // private 속성이 있어 Bond class 에서만 사용할 수 있다
+new Chali().b; // private과 다른 점은 상속 받았을 때 사용이 가능하다
+new Chali().c;
+export {};
