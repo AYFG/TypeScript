@@ -484,3 +484,55 @@ class Chali2 extends Bond2 {
     console.log(this.c);
   }
 }
+
+// optional 있어도 되고 없어도 된다.
+function abc(a: number, b?: number, c?: number) {
+  // function abc(...args:number[]){ 개수 상관없이 전부 지정하고 싶을 때
+}
+abc(1);
+abc(1, 2);
+abc(1, 2, 3);
+abc(1, 2, 3, 4);
+
+let obj_: { a: string; b?: string } = { a: "hello", b: "world" };
+obj_ = { a: "hello" };
+
+// 문자열 또는 숫자열을 타입 지정하는 잘못된 코드
+function add_(x: string | number, y: string | number): string | number {
+  return x + y;
+}
+add_(1, 2); // 3
+add("1", "2"); // 12
+
+add(1, "2"); //12
+add("1", 2); //12
+
+// generic 함수를 선언할 때가 아닌 함수를 실행할 때 타입이 정해질 수 있도록 해주는 역할
+// function add_Generic<T>(x: T, y: T): T {
+function add_Generic<T extends number, K extends string>(x: T, y: K): T {
+  return x + y;
+}
+add_Generic(1, 2);
+add_Generic("1", "2");
+add_Generic(true, false); // T에 제한이 없으면 true + false가 가능하게 됨
+
+add_Generic("1", 2);
+add_Generic(1, "2");
+
+// 콜백함수의 형태를 제한하는 제네릭
+function CallbackGeneric<T extends (a: string) => number>(x: T): T {
+  return x;
+}
+CallbackGeneric((a) => +a);
+// 제한이 없다는걸 표현할 때 any를 넣음
+function freeGeneric<T extends (...args: any) => any>(x: T): T {
+  return x;
+}
+// 생성자
+function abs<T extends abstract new (...args: any) => any>(x: T): T {
+  return x;
+}
+class ABS {
+  constructor() {}
+}
+abs(ABS);
