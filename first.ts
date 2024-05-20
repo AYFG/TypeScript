@@ -399,3 +399,29 @@ const promises = await Promise.allSettled([
 const errors = promises.filter(isRejected);
 
 export {};
+
+// v4.8
+const x: {} = "hello";
+const y: Object = "hi"; // {}, Object 는 모든 타입(null과 undefined는 제외)
+const xx: object = "hi"; // 객체
+const yy: object = { hello: "world" }; // object 지양, interface | type | class 사용 권장
+const z: unknown = "hi";
+
+// unknown = {} | null | undefined
+if (z) {
+  z; // const z: {}
+}
+
+interface AA {
+  readonly a: String;
+  b: string;
+}
+const aaaa: AA = { a: "hello", b: "world" };
+aaaa.a = "123"; // 읽기 전용 속성 부여로 바꾸지 못하게 막아줌
+
+type AAA = { [key: string]: number }; // index signature
+const aaa: AAA = { a: 3, b: 5, c: 2, d: 123 };
+
+type BB = "Human" | "Mammal" | "Animal"; // interface는 | & 가 안된다
+type BBB = { [key in BB]: BB }; // mapped type
+const bbb: BBB = { Human: "Animal", Mammal: "Human", Animal: "Mammal" };
