@@ -536,3 +536,12 @@ class ABS {
   constructor() {}
 }
 abs(ABS);
+
+// 기본값
+const defaultValue = (b: number = 3, c: number = 5) => {
+  return "3";
+};
+const defaultValue2 = (b: { children: string } = { children: "woong" }) => {};
+// 리액트 jsx 제네릭
+const reactGeneric = <T = unknown>(x: T, y: T) => ({ x, y });
+const reactGeneric2 = <T extends unknown>(x: T, y: T) => ({ x, y });
