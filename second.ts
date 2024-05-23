@@ -3,10 +3,10 @@
 // 1.forEach 제네릭
 interface Array<T> {
   // forEach 타이핑
-  forEach(
-    callbackfn: (value: T, index: number, array: T[]) => void,
-    thisArg?: any
-  ): void;
+  //   forEach(
+  //     callbackfn: (value: T, index: number, array: T[]) => void,
+  //     thisArg?: any
+  //   ): void;
 }
 // 제네릭 덕분에 value의 타입 추론이 잘되고있다.
 [1, 2, 3].forEach((value) => {
@@ -96,3 +96,35 @@ const filtered2 = ["1", 2, "3", 4, "5"].filter(
   (value) => typeof value === "string"
 ); //["1","3","5"] string[] 나오는 결과 : const filtered2: (string | number)[] 왜 추론을 못하고 추론을 잘하게 하려면?
 const filtered3 = ["1", 2, "3", 4, "5"].filter(predicate);
+
+// 타입 만들기
+interface Arr<T> {
+  forEach(callback: (item: T, index: number) => void): void;
+  //원본 forEach
+  forEach(
+    callbackfn: (value: T, index: number, array: T[]) => void,
+    thisArg?: any
+  ): void;
+}
+const makeTypeA: Arr<number> = [1, 2, 3];
+makeTypeA.forEach((item, index) => {
+  console.log(item, index);
+  item.toFixed(1);
+});
+makeTypeA.forEach((item) => {
+  console.log(item);
+  return "3";
+});
+const makeTypeB: Arr<string> = ["1", "2", "3"];
+makeTypeB.forEach((item) => {
+  console.log(item);
+  item.charAt(3);
+});
+makeTypeB.forEach((item) => {
+  console.log(item);
+  return "3";
+});
+const makeTypeC: Arr<string | number> = ["1", 2, "3"];
+makeTypeC.forEach((item) => {
+  console.log(item);
+});
