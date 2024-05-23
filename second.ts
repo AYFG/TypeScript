@@ -106,21 +106,21 @@ interface Arr<T> {
     thisArg?: any
   ): void;
 }
-const makeTypeA: Arr<number> = [1, 2, 3];
-makeTypeA.forEach((item, index) => {
+const markTypeForEachA: Arr<number> = [1, 2, 3];
+markTypeForEachA.forEach((item, index) => {
   console.log(item, index);
   item.toFixed(1);
 });
-makeTypeA.forEach((item) => {
+markTypeForEachA.forEach((item) => {
   console.log(item);
   return "3";
 });
-const makeTypeB: Arr<string> = ["1", "2", "3"];
-makeTypeB.forEach((item) => {
+const makeTypeForEachB: Arr<string> = ["1", "2", "3"];
+makeTypeForEachB.forEach((item) => {
   console.log(item);
   item.charAt(3);
 });
-makeTypeB.forEach((item) => {
+makeTypeForEachB.forEach((item) => {
   console.log(item);
   return "3";
 });
@@ -128,3 +128,18 @@ const makeTypeC: Arr<string | number> = ["1", 2, "3"];
 makeTypeC.forEach((item) => {
   console.log(item);
 });
+
+// map 타입 만들기
+interface ArrMap<T> {
+  map<S>(callback: (value: T, index: number) => S): S[];
+  // 원본 map
+  //   map<U>(
+  //     callbackfn: (value: T, index: number, array: T[]) => U,
+  //     thisArg?: any
+  //   ): U[];
+}
+const makeTypeMap: ArrMap<number> = [1, 2, 3];
+const plusMap = makeTypeMap.map((v, i) => v + 1); // [2,3,4]
+const toStringMap = makeTypeMap.map((v) => v.toString()); // ['2','3','4']; string[]
+const remainderMap = makeTypeMap.map((v) => v % 2 === 0); // [false,ture,false] boolean[]
+const toNumberMap = makeTypeMap.map((v) => +v);
