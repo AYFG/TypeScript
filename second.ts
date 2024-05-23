@@ -53,8 +53,46 @@ interface Array<T> {
   //   타입스크립트 때문에 헷갈리면 자바스크립트로도 봐본다
   map<U>(callbackfn, thisArg): U[];
 }
+// 어떻게 제네릭이 toString으로 변환한 것을 추론해줬을까
 const strings = [1, 2, 3].map((value) => {
   value.toString(); // ["1","2","3"]
   // toString -> (method) Number.toString(radix?: number | undefined): string으로 변환해주므로 U는 string이 된다
 });
-// 어떻게 제네릭이 toString으로 변환한 것을 추론해줬을까
+
+// filter 제네릭
+interface Array<T> {
+  //   filter<S extends T>(
+  //     predicate: (value: T, index: number, array: readonly T[]) => value is S,
+  //     thisArg?: any
+  //   ): S[];
+  //   filter(
+  //     predicate: (value: T, index: number, array: readonly T[]) => unknown,
+  //     thisArg?: any
+  //   ): T[];
+  //   filter<S extends string | number>( // S도 number여야 한다
+  //     predicate: (
+  //       value: string | number,
+  //       index: number,
+  //       array: string | number[]
+  //     ) => value is S,
+  //     thisArg?: any
+  //   ): (string | number)[];
+  //   filter(
+  //     predicate: (
+  //       value: number,
+  //       index: number,
+  //       array: readonly number[]
+  //     ) => unknown,
+  //     thisArg?: any
+  //   ): number[];
+}
+const filtered = [1, 2, 3, 4, 5].filter((value) => value % 2);
+// const filtered: number[] T는 넘버
+
+const predicate = (value: string | number): value is string =>
+  typeof value === "string";
+
+const filtered2 = ["1", 2, "3", 4, "5"].filter(
+  (value) => typeof value === "string"
+); //["1","3","5"] string[] 나오는 결과 : const filtered2: (string | number)[] 왜 추론을 못하고 추론을 잘하게 하려면?
+const filtered3 = ["1", 2, "3", 4, "5"].filter(predicate);
