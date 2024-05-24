@@ -141,5 +141,25 @@ interface ArrMap<T> {
 const makeTypeMap: ArrMap<number> = [1, 2, 3];
 const plusMap = makeTypeMap.map((v, i) => v + 1); // [2,3,4]
 const toStringMap = makeTypeMap.map((v) => v.toString()); // ['2','3','4']; string[]
-const remainderMap = makeTypeMap.map((v) => v % 2 === 0); // [false,ture,false] boolean[]
+const remainderMap = makeTypeMap.map((v) => v % 2 === 0); // [false,true,false] boolean[]
 const toNumberMap = makeTypeMap.map((v) => +v);
+
+// filter 타입 만들기
+interface ArrFilter<T> {
+  filter<S extends T>(callback: (value: T) => value is S): S[];
+  // 원본 필터
+  // filter<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S[];
+  // filter(predicate: (value: T, index: number, array: T[]) => unknown, thisArg?: any): T[];
+}
+const makeTypeFilter: ArrFilter<number> = [1, 2, 3];
+const remainderFilter = makeTypeFilter.filter((v): v is number => v % 2 === 0); //[2] number[]
+const StrAndNumArrayFilter: ArrFilter<number | string> = [1, "2", 3, "4", 5, 6];
+const runToString = StrAndNumArrayFilter.filter(
+  (v): v is string => typeof v === "string"
+); //['2','4'] string[]
+const runToNumber = StrAndNumArrayFilter.filter(
+  (v): v is number => typeof v === "number"
+); // [1,3,5] number[]
+const predicateNumFilter = (v: string | number): v is number =>
+  typeof v === "number";
+const runToNumber2 = StrAndNumArrayFilter.filter(predicateNumFilter);
