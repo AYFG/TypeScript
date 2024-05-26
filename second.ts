@@ -163,3 +163,24 @@ const runToNumber = StrAndNumArrayFilter.filter(
 const predicateNumFilter = (v: string | number): v is number =>
   typeof v === "number";
 const runToNumber2 = StrAndNumArrayFilter.filter(predicateNumFilter);
+
+// 공변성, 반공변성, 이변성, 불변성
+// 리턴값은 넓은 타입으로 대입 가능하다
+function stringToNumber(x: string): number {
+  return +x;
+}
+stringToNumber("1"); // 1
+
+type stringToNumOrString = (x: string) => number | string;
+const stringToNumber2: stringToNumOrString = stringToNumber; // ???
+
+// 매개변수는 좁은 타입에도 대입이 된다
+function stringToNumber_B(x: string | number): number {
+  // (x: string) => number 또는 (x: number) => number
+  return +x;
+}
+stringToNumber_B("1"); // 1
+
+type stringToNumOrString_B = (x: string) => number;
+// type stringToNumOrString_B = (x: string | number) => number; // 오히려 넓은 타입으로는 대입이 안된다.
+const stringToNumber2_B: stringToNumOrString_B = stringToNumber;
