@@ -216,3 +216,49 @@ class Add_classOverLoading {
 
 const add_classOverLoading =
   new Add_classOverLoading().add_interfaceOverLoading("1", 2);
+
+// 타입스크립트 건망증 치료 (타입 변수 지정/as 남발 줄이기)
+interface Axios {
+  get(): void;
+}
+// extends 키워드 모를 때 기존에 있던 타입 가져와도 됨
+// interface CustomError {
+//   name: string;
+//   message: string;
+//   stack?: string;
+//   response?: { data: any };
+// }
+// interface CustomError extends Error {
+//   response?: {
+//     data: any;
+//   };
+// }
+class CustomError extends Error {
+  //
+  response?: {
+    data: any;
+  };
+}
+declare const axios: Axios;
+async () => {
+  try {
+    await axios.get();
+  } catch (err: unknown) {
+    // as는 unknown일 때 사용한다
+    console.error((err as CustomError).response?.data);
+    // err.response?.data; // 위에서 as CustomError로 지정해줬지만 일회성이다.
+    (err as CustomError).response?.data; // as를 한 번 더 붙여서 해결도 가능하지만 as를 많이 사용하게 된다.
+
+    // 커스텀 에러 변수 지정 (커스텀 에러가 아닌 다른 에러이면 줄줄이 에러가 날 가능성이 높은 코드)
+    const customError = err as CustomError;
+    console.error(customError.response?.data);
+    customError.response?.data;
+
+    // 타입가드
+    if (err instanceof CustomError) {
+      // js로 변환할 때 interface가 사라지기 때문에 타입가드에서는 interface를 사용하지 못하고 class를 사용해야한다.
+      console.error(err.response?.data);
+      err.response?.data;
+    }
+  }
+};
