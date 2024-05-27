@@ -184,3 +184,35 @@ stringToNumber_B("1"); // 1
 type stringToNumOrString_B = (x: string) => number;
 // type stringToNumOrString_B = (x: string | number) => number; // 오히려 넓은 타입으로는 대입이 안된다.
 const stringToNumber2_B: stringToNumOrString_B = stringToNumber;
+
+// 타입 오버로딩
+// 같은 타입을 여러 번 선언한다
+declare function add_OverLoading(x: number, y: number): number;
+declare function add_OverLoading(x: number, y: number, z: number): number;
+declare function add_OverLoading(x: string, y: string): number;
+
+add_OverLoading(1, 2);
+add_OverLoading(1, 2, 3);
+add_OverLoading("1", "2");
+
+interface Add_interfaceOverLoading {
+  (x: number, y: number): number;
+  (x: string, y: string): string;
+}
+const add_interfaceOverLoading: Add_interfaceOverLoading = (x: any, y: any) =>
+  x + y; // 인터페이스에서 오버로딩으로 타입들을 선언하여 any를 사용
+add_interfaceOverLoading(1, 2);
+add_interfaceOverLoading("1", "2");
+add_interfaceOverLoading("1", 2);
+
+class Add_classOverLoading {
+  add_interfaceOverLoading(x: number, y: number): number;
+  add_interfaceOverLoading(x: string, y: string): string;
+  add_interfaceOverLoading(x: any, y: any) {
+    // 위에 타입들만 오버로딩으로 되어 any는 무시됨
+    return x + y;
+  }
+}
+
+const add_classOverLoading =
+  new Add_classOverLoading().add_interfaceOverLoading("1", 2);
