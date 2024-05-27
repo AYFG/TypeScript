@@ -146,7 +146,7 @@ const recordObj: Record<string, number> = { a: 3, b: 5, c: 7 };
 type Record_Custom<T extends keyof any, S> = {
   // type Record_Custom<T, S> = {
   // 'T' 형식은 'string | number | symbol' 형식에 할당할 수 없습니다.ts(2322)
-  // 객체의 키는 string or number of symbol만 올 수 있기 때문에 T 형식에 extends keyof any를 붙여준다.
+  // 객체의 키는 string or number or symbol만 올 수 있기 때문에 T 형식에 extends keyof any를 붙여준다.
 
   [key in T]: S;
 };
@@ -160,3 +160,70 @@ type NonNullable_Custom<T> = T extends null | undefined ? never : T;
 type primitiveValue_Custom = NonNullable_Custom<mixedValue>;
 // non-nullable 원본
 // type NonNullable<T> = T & {};
+
+// Parameters
+function zip(
+  x: number,
+  y: string,
+  z: boolean
+): { x: number; y: string; z: boolean } {
+  return { x, y, z };
+}
+type Params = Parameters<typeof zip>;
+type First = Params[0];
+type Second = Params[1];
+type Third = Params[2];
+// Parameters 만들기 (infer : 추론하다 extends에서만 사용 가능)
+type Parameters_Custom<T extends (...args: any) => any> = T extends (
+  ...args: infer A //   매개변수 자리를 추론하여 값이 있으면 그걸 써라
+) => any
+  ? A
+  : never;
+// T extends (...args: any)=> any (T를 함수로 제한하기)
+// Parameters 원본
+// type Parameters<T extends (...args: any) => any> = T extends (
+//   ...args: infer P
+// ) => any
+//   ? P
+//   : never;
+type Params_Zip = Parameters_Custom<typeof zip>;
+type First_zip = Params_Zip[0];
+type Second_zip = Params_Zip[1];
+type Third_zip = Params_Zip[2];
+
+// ReturnType 만들기
+type ReturnType_Custom<T extends (...args: any) => any> = T extends (
+  ...args: any
+) => infer A
+  ? A
+  : never;
+// ReturnType 원본
+// type ReturnType<T extends (...args: any) => any> = T extends (
+//   ...args: any
+// ) => infer R
+//   ? R
+//   : any;
+type ReturnType_Zip = ReturnType_Custom<typeof zip>;
+
+// 닮은 꼴 타입
+// type ConstructorParameters<T extends abstract new (...args: any) => any> =
+//   T extends abstract new (...args: infer P) => any ? P : never;
+
+// type InstanceType<T extends abstract new (...args: any) => any> =
+//   T extends abstract new (...args: any) => infer R ? R : any;
+
+class DummyClass {
+  a: string;
+  b: number;
+  c: boolean;
+  constructor(a: string, b: number, c: boolean) {
+    this.a = a;
+    this.b = b;
+    this.c = c;
+  }
+}
+const dummyVariable = new DummyClass("123", 456, true);
+type SearchConstructorParams = ConstructorParameters<typeof DummyClass>; // typeof 클래스가 생성자
+type SearchInstanceType = InstanceType<typeof DummyClass>;
+
+const dummyVariable2: DummyClass = new DummyClass("123", 456, true); // 인스턴스 (new)
