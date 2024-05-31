@@ -227,3 +227,43 @@ type SearchConstructorParams = ConstructorParameters<typeof DummyClass>; // type
 type SearchInstanceType = InstanceType<typeof DummyClass>;
 
 const dummyVariable2: DummyClass = new DummyClass("123", 456, true); // 인스턴스 (new)
+
+// Promise,Awaited 분석
+
+const p1 = Promise.resolve(1)
+  .then((a) => a + 1)
+  .then((a) => a + 1)
+  .then((a) => a.toString);
+// Promise<number>,Promise<number>,Promise<number>,Promise<string>
+const p2 = Promise.resolve(2); // Promise<number>
+const p3 = new Promise((res, rej) => {
+  // Promise<unknown>
+  setTimeout(res, 1000);
+});
+Promise.all([p1, p2, p3]).then((result) => {
+  // {'0':string,'1':number,'2':unknown}
+  // (parameter) result: [(radix?: number | undefined) => string, number, unknown] 타입을 어떻게 알아냈을까?
+  console.log(result); // [3,2,undefined]
+});
+
+// Promise.all 원본
+// all<T extends readonly unknown[] | []>(values: T): Promise<{ -readonly [P in keyof T]: Awaited<T[P]>; }>;
+
+// T = [p1,p2,p3] {'0' : p1, '1' : p2, '2' : p3, length: 3}}
+// keyof T = "0" | "1" | "2" | "length"
+
+const arr = [1, 2, 3] as const;
+type Arr2 = keyof typeof arr;
+const key: Arr2 = "length";
+
+// Awaited 원본
+type Awaited<T> = T extends null | undefined
+  ? T // special case for `null | undefined` when not in `--strictNullChecks` mode
+  : T extends object & { then(onfulfilled: infer F, ...args: infer _): any } // `await` only unwraps object types with a callable `then`. Non-object types are not unwrapped
+  ? F extends (value: infer V, ...args: infer _) => any // if the argument to `then` is callable, extracts the first argument
+    ? Awaited<V> // recursively unwrap the value
+    : never // the argument to `then` was not callable
+  : T; // non-object or non-thenable
+
+type Result = Awaited<Promise<Promise<Promise<number>>>>; // type Result = number / 최종의 타입으로 추론해주는 Awaited
+type Result2 = Awaited<{ then(onfulfilled: (v: number) => number): any }>; // thenable
