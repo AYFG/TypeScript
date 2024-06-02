@@ -267,3 +267,52 @@ type Awaited<T> = T extends null | undefined
 
 type Result = Awaited<Promise<Promise<Promise<number>>>>; // type Result = number / 최종의 타입으로 추론해주는 Awaited
 type Result2 = Awaited<{ then(onfulfilled: (v: number) => number): any }>; // thenable
+
+// Bind 분석하기
+function whatIsThis(this: Window | typeof obj_A,param:string) {
+  console.log(this.name);
+}
+const obj_A = { name: "woong" };
+const obj_B = whatIsThis.bind(obj_A);
+// bind 원본
+bind<T>(this: T, thisArg: ThisParameterType<T>): OmitThisParameter<T>;
+// this를 추론해내는 타입
+type ThisParameterType<T> = T extends (this: infer U, ...args: never) => any
+  ? U
+  : unknown;
+// ThisParameterType이 unknown이면 T 아니라면 R
+type OmitThisParameter<T> = unknown extends ThisParameterType<T>
+  ? T
+  : T extends (...args: infer A) => infer R
+  ? (...args: A) => R
+  : T;
+
+type ParamInfer = ThisParameterType<typeof whatIsThis> // this 추출
+type NoThis = OmitThisParameter<typeof whatIsThis> // this를 없앤 함수 타입 추출
+
+// bind 예시
+const ayfg = {
+  name : 'woong',
+  sayHello(this:{name:string}){
+    console.log(`hi ${this.name}`)
+  }
+}
+const sayHello = ayfg.sayHello;
+const sayHi = ayfg.sayHello.bind({name:"jaewoong"}) // this를 고정
+sayHi(); // "hi jaewoong"
+// bind 예시2
+function noThisAdd(a:number,b:number,c:number,d:number,e:number,f:number){
+  return a+b+c+d+e+f
+}
+const addBind1 = noThisAdd.bind(null);
+addBind1(1,2,3,4,5,6)
+const addBind2 = noThisAdd.bind(null,1);
+addBind2(2,3,4,5,6)
+const addBind3 = noThisAdd.bind(null,1,2)
+addBind3(3,4,5,6)
+const addBind4 = noThisAdd.bind(null,1,2,3);
+addBind4(4,5,6)
+const addBind5 = noThisAdd.bind(null,1,2,3,4);
+addBind5(5,6)
+const addBind6 = noThisAdd.bind(null,1,2,3,4,5);
+addBind6(6)
