@@ -4,5 +4,5 @@
   function hello(name: string) {
     return "hello" + name;
   }
-  console.log(hello("웅재맨"));
+  console.log(hello("웅재"));
 })();
