@@ -32,6 +32,6 @@
   const s1 = new HighSchool(100, 91);
   console.log(`평균 : ${s1.avg()}`);
 
-  s1.eng = 99;
-  console.log(s1.sum() / 2);
+  // s1.eng = 99;
+  // console.log(s1.sum() / 2);
 })();
