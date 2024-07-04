@@ -20,11 +20,13 @@
     interface Todo{
         title: string,
         content: string
+        // sum:()=> void;
     }
     //객체 (속성값에 맞춰서 타입추론) 타입 or 인터페이스 권장
     const todo1: Todo = {
         title: '할 일 1',
         content: '내용 1',
+        // sum: ()=> {"hello"}
     }   
 
     // 즉석 일회용 타입 

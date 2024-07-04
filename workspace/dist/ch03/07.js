@@ -17,6 +17,7 @@
     const todo1 = {
         title: '할 일 1',
         content: '내용 1',
+        // sum: ()=> {"hello"}
     };
     // 즉석 일회용 타입 
     // const todo2: {

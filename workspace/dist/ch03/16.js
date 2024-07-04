@@ -1,4 +1,36 @@
 "use strict";
 // 타입 가드 함수 작성
 (() => {
+    const user1 = {
+        name: "무지",
+        age: 17,
+        admin: false,
+    };
+    const user2 = {
+        name: "라이언",
+        admin: true,
+        level: 2,
+    };
+    const user3 = {
+        name: "게스트",
+        age: 0,
+    };
+    function helloUser(user) {
+        // if ("admin" in user && user.admin) {
+        if (isAdmin(user)) {
+            console.log(`안녕하세요 레벨 ${user.level} ${user.name} 관리자님. `);
+        }
+        else { // 나이를 출력
+            console.log(`안녕하세요 ${user.name} 회원님. `);
+        }
+    }
+    // 타입가드 구문이 복잡하고 여러번 사용해야 하는 경우
+    // 타입 함수
+    //user is AdminUser : true를 리턴할 경우 user의 타입이 AdminUser가 확정됨
+    function isAdmin(user) {
+        return "admin" in user && user.admin;
+    }
+    helloUser(user1);
+    helloUser(user2);
+    helloUser(user3);
 })();
