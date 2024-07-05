@@ -1,0 +1,18 @@
+{
+  "name": "use-pkg",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/lodash": "^4.17.6",
+    "axios": "^1.7.2",
+    "fesp2-math": "^0.0.1",
+    "lodash": "^4.17.21"
+  }
+}
