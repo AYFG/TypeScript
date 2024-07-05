@@ -33,7 +33,7 @@ const todo2: TodoList = {
     //   done: false,
       content: "목록에 사용",
     //   name: '무지',
-    //   age: 25,
+,    //   age: 25,
     })
   );
 })();

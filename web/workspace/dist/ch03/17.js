@@ -22,8 +22,6 @@
         //   id: 3,
         //   done: false,
         content: "목록에 사용",
-        //   name: '무지',
-        //   age: 25,
     }));
 })();
 export {};
