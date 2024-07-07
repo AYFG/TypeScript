@@ -316,3 +316,12 @@ const addBind5 = noThisAdd.bind(null,1,2,3,4);
 addBind5(5,6)
 const addBind6 = noThisAdd.bind(null,1,2,3,4,5);
 addBind6(6)
+
+// flat 타입 분석
+const multiArray = [1,2,3,[1,2],[[1],[2]]].flat() // [1,2,3,1,2,[1],[2]]
+// flat 원본
+flat<A, D extends number = 1>(
+        this: A,
+        depth?: D,
+    ): FlatArray<A, D>[]
+
