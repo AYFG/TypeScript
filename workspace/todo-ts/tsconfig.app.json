@@ -6,7 +6,7 @@
       "@components/*": ["components/*"],
       "@pages/*": ["pages/*"],
       "@hooks/*": ["hooks/*"],
-      "#types/*": ["ty[es/*"],
+      "#types/*": ["types/*"]
     },
     "composite": true,
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
@@ -31,8 +31,8 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    "allowJs": true,
-    // "checkJs": true,
+    "allowJs": true // 자바스크립트 파일을 타입스크립트 프로젝트에 포함
+    // "checkJs": true, // 자바스크립트 파일에 대한 타입체크 활성화
   },
   "include": ["src", "src/vite-env.d.ts"]
 }

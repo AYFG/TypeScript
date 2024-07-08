@@ -5,10 +5,14 @@ import { useState } from 'react';
 import { TodoItemData } from 'types/todo';
 
 type Props = {
-  items: TodoItemData,
+  item: TodoItemData,
   refetch: () => Promise<void>,
 }
 
+// function TodoItem({ item, refetch}:Props{
+  // item: TodoItemData,
+  // refetch: () => Promise<void>,
+// }){
 function TodoItem({ item, refetch}:Props){
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState(item.title);
@@ -103,6 +107,7 @@ function TodoItem({ item, refetch}:Props){
             </Submit>
             <Button onClick={handleCancel}>취소</Button>
              </>
+             
             :<>
               <Button onClick={handleEdit}>수정</Button>
             <Submit bgColor="red" onClick={handleDelete}>

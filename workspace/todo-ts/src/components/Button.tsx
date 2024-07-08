@@ -3,8 +3,8 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   children: React.ReactNode,
   // bgColor: string;
   // btnSize: string;
-  bgColor: "gray" | "red" | "blue";
-  btnSize: "sm" | "md" | "lg";
+  bgColor?: "gray" | "red" | "blue";
+  btnSize?: "sm" | "md" | "lg";
 }
 
 // const Button: React.FC<React.ButtonHTMLAttributes<HTMLButtonElement>> = ({ children, type="button", bgColor="gray", btnSize="sm", ...rest }) => {
