@@ -1,5 +1,7 @@
 import Layout from "@components/layout";
 import Error from "@pages/Error";
+import Community from "@pages/community";
+import CommentList from "@pages/community/CommentList";
 import Detail from "@pages/community/Detail";
 import Edit from "@pages/community/Edit";
 import List from "@pages/community/List";
@@ -15,12 +17,22 @@ const router = createBrowserRouter([
     element:<Layout/>,
     children: [
       {
+        index: true,
+        element: <Community/>
+      },
+      {
       path: ":type",
       element: <List/>
       },
       {
       path: ":type/:_id",
-      element: <Detail/>
+      element: <Detail/>,
+      children: [
+        {
+          index: true,
+          element: <CommentList/>
+        }
+      ]
       },
       {
       path: ":type/:_id/edit",
