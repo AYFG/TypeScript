@@ -1,17 +1,51 @@
 import Button from "@components/Button";
 import Submit from "@components/Submit";
-import useInput from "@hooks/useInput";
-import { useState } from "react";
+import userStore from "@zustand/Store";
 // import { create } from "zustand";
 
-
 export default function Signup() {
-  const [name, onChangeName] = useInput("");
-  const [email, onChangeEmail] = useInput("");
-  const [password, onChangePassword] = useInput("");
-  const [image,setImage] = useState("")
+  const { email, password, name, image, setImage, setField } = userStore((state) => ({
+    email: state.email,
+    password: state.password,
+    name: state.name,
+    type: "user",
+    image: state.image,
+    setImage: state.setImage,
+    setField: state.setField,
+  }));
 
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    console.log(name);
+    console.log(value);
+    setField(name, value);
+  };
+
+  const onChangeImage = (e) =>{
+    setImage(e.target.files[0]);
+  }
   
+  const onSubmitSignup = ((e) => {
+    e.preventDefault();
+    const data = {
+      "email": email,
+      "password": password,
+      "name": name,
+      "type": "user",
+      "profileImage": image
+    }
+    console.log(data)
+    history.back();
+      fetch("https://api.fesp.shop/users",{
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body:JSON.stringify(data)
+      })
+      console.log(data)
+    });
+
   return (
     <main className="min-w-80 flex-grow flex items-center justify-center">
       <div className="p-8  border border-gray-200 rounded-lg w-full max-w-md dark:bg-gray-600 dark:border-0">
@@ -21,12 +55,7 @@ export default function Signup() {
           </h2>
         </div>
 
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            history.back();
-          }}
-        >
+        <form onSubmit={onSubmitSignup}>
           <div className="mb-4">
             <label
               className="block text-gray-700 dark:text-gray-200 mb-2"
@@ -41,7 +70,7 @@ export default function Signup() {
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-orange-400 dark:bg-gray-700"
               name="name"
               value={name}
-              onChange={onChangeName}
+              onChange={onChange}
             />
             {/* <!-- 입력값 검증 에러 출력 -->
                 <!-- <p className="ml-2 mt-1 text-sm text-red-500 dark:text-red-400">에러 메세지</p> --> */}
@@ -60,7 +89,7 @@ export default function Signup() {
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-orange-400 dark:bg-gray-700"
               name="email"
               value={email}
-              onChange={onChangeEmail}
+              onChange={onChange}
             />
             {/* <!-- 입력값 검증 에러 출력 -->
                 <!-- <p className="ml-2 mt-1 text-sm text-red-500 dark:text-red-400">에러 메세지</p> --> */}
@@ -80,7 +109,7 @@ export default function Signup() {
               name="password"
               autoComplete="false"
               value={password}
-              onChange={onChangePassword}
+              onChange={onChange}
             />
             {/* <!-- 입력값 검증 에러 출력 -->
                 <!-- <p className="ml-2 mt-1 text-sm text-red-500 dark:text-red-400">에러 메세지</p> --> */}
@@ -100,7 +129,7 @@ export default function Signup() {
               placeholder="이미지를 선택하세요"
               className="w-full px-3 py-2 border rounded-lg dark:bg-gray-700"
               name="profileImage"
-              onChange = {(e)=>setImage(e.target.file[0])}
+              onChange={(onChangeImage)}
             />
           </div>
 
