@@ -1,17 +1,16 @@
 import Button from "@components/Button";
 import Submit from "@components/Submit";
 import userStore from "@zustand/Store";
-// import { create } from "zustand";
 
 export default function Signup() {
-  const { email, password, name, image, setImage, setField } = userStore((state) => ({
+  let { email, password, name, setField, image, setImage } = userStore((state) => ({
     email: state.email,
     password: state.password,
     name: state.name,
     type: "user",
-    image: state.image,
-    setImage: state.setImage,
     setField: state.setField,
+    setImage: state.setImage,
+    image: state.image,
   }));
 
   const onChange = (e) => {
@@ -25,26 +24,57 @@ export default function Signup() {
     setImage(e.target.files[0]);
   }
   
-  const onSubmitSignup = ((e) => {
+  const onSubmitSignup = async (e) => {
     e.preventDefault();
-    const data = {
-      "email": email,
-      "password": password,
-      "name": name,
-      "type": "user",
-      "profileImage": image
-    }
-    console.log(data)
     history.back();
-      fetch("https://api.fesp.shop/users",{
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body:JSON.stringify(data)
-      })
-      console.log(data)
+    const formData = new FormData();
+    formData.append('attach', image);
+    let img;
+    try{
+    const response = await fetch("https://api.fesp.shop/files", {
+      method: "POST",
+      headers: {},
+      body: formData,
     });
+      if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const result = await response.json();
+    console.log(result);
+    img = result.item[0];
+    // console.log(image)
+    // console.log(result.item[0].originalname);
+  }
+  catch(err){
+      console.error(err)
+    }
+    const data = {
+      email: email,
+      password: password,
+      name: name,
+      type: "user",
+      profileImage: img,
+    };
+    console.log(data)
+    try{
+      const response = await fetch("https://api.fesp.shop/users",{
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body:JSON.stringify(data)
+        })
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+        console.log(result);
+        setImage(img);
+    }catch(err){
+      console.error(err)
+    }
+
+    };
 
   return (
     <main className="min-w-80 flex-grow flex items-center justify-center">

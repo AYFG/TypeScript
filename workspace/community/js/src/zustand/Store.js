@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware"
-const userStore = create(
+export const userStore = create(
   persist(
     (set) => ({
       email: "",
@@ -14,6 +14,9 @@ const userStore = create(
       image: null,
       accessToken: null,
       refreshToken: null,
+      login: false,
+      key: "https://api.fesp.shop",
+      setLogin: (login) => set({ login }),
       setAccessToken: (accessToken) => set({ accessToken }),
       setRefreshToken: (refreshToken) => set({ refreshToken }),
       setImage: (image) => set({ image }),
@@ -27,10 +30,21 @@ const userStore = create(
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         name: state.name,
+        image: state.image,
+        login: state.login,
       }),
     }
   )
+
 );
 
+export const postStore = create((set)=>({
+  title:"",
+  setTitle: (title) => set({ title }),
+  content:"",
+  setContent: (content) => set({content}),
+  setField: (field, value) =>
+        set((state) => ({ ...state, [field]: value })),
+}))
 
-export default userStore
+export default userStore;

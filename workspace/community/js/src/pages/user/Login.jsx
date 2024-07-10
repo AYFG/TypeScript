@@ -3,7 +3,7 @@ import userStore from '@zustand/Store';
 import { Link } from 'react-router-dom';
 
 export default function Login() {
-  const { email, password, setField, setAccessToken, setRefreshToken, setName } =
+  const { email, password, setField, accessToken,setAccessToken, setRefreshToken, setName, setImage, login, setLogin,key } =
     userStore((state) => ({
       email: state.email,
       password: state.password,
@@ -11,8 +11,15 @@ export default function Login() {
       setAccessToken: state.setAccessToken,
       setRefreshToken: state.setRefreshToken,
       setName: state.setName,
+      setImage: state.setImage,
+      login: state.login,
+      setLogin: state.setLogin,
+      key: state.key,
+      accessToken:state.accessToken,
     }));
 
+const getItem = JSON.parse(sessionStorage.getItem("user-storage"));
+const accessSessionToken = getItem.state.accessToken;
 
   const onChange = (e) => {
     const { name, value } = e.target;
@@ -40,10 +47,12 @@ export default function Login() {
       throw new Error('Network response was not ok');
     }
     const result = await response.json();
-    console.log(result.item.name);
+    // console.log('rs',result)
     setAccessToken(result.item.token.accessToken);
     setRefreshToken(result.item.token.refreshToken);
-    setName(result.item.name)
+    setName(result.item.name);
+    setImage(key + result.item.profileImage.path);
+    accessToken == accessSessionToken ? setLogin(true) : setLogin(false);
   }
   catch(err){
       console.error(err)
