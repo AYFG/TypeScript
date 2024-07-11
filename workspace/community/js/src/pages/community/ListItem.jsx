@@ -6,8 +6,6 @@ export default function ListItem() {
   const fetchItems = useFetch("/posts");
 
   const postItems = fetchItems.data?.item;
-  // console.log(id)
-
   
   const onClickDetail = (id) => {
     navigate(`/info/${id}`)

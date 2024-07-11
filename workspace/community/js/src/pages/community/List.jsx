@@ -13,7 +13,7 @@ export default function List() {
           </div>
           <div className="flex justify-end mr-4">
             <Search/>
-            <Button onClick={() => navigate(`info/new`)}>글작성</Button>
+            <Button onClick={() => navigate(`/info/new`)}>글작성</Button>
           </div>
           <section className="pt-10">
             <table className="border-collapse w-full table-fixed">

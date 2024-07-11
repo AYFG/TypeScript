@@ -3,6 +3,8 @@ import { persist } from "zustand/middleware"
 export const userStore = create(
   persist(
     (set) => ({
+      id: "",
+      setId: (id) => set({ id }),
       email: "",
       setEmail: (email) => set({ email }),
       password: "",
@@ -32,6 +34,7 @@ export const userStore = create(
         name: state.name,
         image: state.image,
         login: state.login,
+        id:state.id,
       }),
     }
   )
@@ -47,4 +50,15 @@ export const postStore = create((set)=>({
         set((state) => ({ ...state, [field]: value })),
 }))
 
+export const commentStore = create((set) => ({
+  comment: "",
+  setComment: (comment) => set({ comment }),
+  commentPostId: "",
+  reply_id: "",
+  commentFix: "",
+  setCommentFix: (commentFix) => set ({commentFix}),
+  setReply_id : (reply_id) => set({ reply_id }),
+  setCommentPostId: (commentPostId) => set({ commentPostId }),
+  setField: (field, value) => set((state) => ({ ...state, [field]: value })),
+}));
 export default userStore;

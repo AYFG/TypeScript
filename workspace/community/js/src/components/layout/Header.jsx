@@ -80,6 +80,7 @@ export default function Header() {
           {/* --> */}
 
           {/* <!-- 로그인 전 --> */}
+          {!login && (
           <div className="flex justify-end">
             <Button type="button" onClick={onClickLogin}>
               로그인
@@ -91,7 +92,7 @@ export default function Header() {
             >
               회원가입
             </Button>
-          </div>
+          </div>)}
           <Theme />
         </div>
       </nav>

@@ -26,7 +26,7 @@ export default function New() {
 
   const OnSubmitForm = (e) => {
     e.preventDefault();
-    // history.back();
+    history.back();
     const data = {
       title: title,
       content: content

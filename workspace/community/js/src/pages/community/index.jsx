@@ -12,7 +12,7 @@ export default function Community() {
           따라 참여하고, 의견을 나누세요.
         </p>
         <Link
-          href="/"
+          to="/info"
           className="bg-orange-500 text-white px-6 py-3 rounded hover:bg-orange-600"
         >
           커뮤니티 참여하기
@@ -25,21 +25,21 @@ export default function Community() {
           <div className="bg-white p-6 rounded shadow dark:bg-gray-800">
             <h3 className="text-xl font-bold mb-2">정보 공유</h3>
             <p className="mb-4">다양한 정보와 지식을 공유하세요.</p>
-            <Link href="/info" className="text-orange-500 hover:underline">
+            <Link to="/info" className="text-orange-500 hover:underline">
               바로가기
             </Link>
           </div>
           <div className="bg-white p-6 rounded shadow dark:bg-gray-800">
             <h3 className="text-xl font-bold mb-2">자유 게시판</h3>
             <p className="mb-4">자유롭게 이야기를 나누세요.</p>
-            <Link href="/free" className="text-orange-500 hover:underline">
+            <Link to="/free" className="text-orange-500 hover:underline">
               바로가기
             </Link>
           </div>
           <div className="bg-white p-6 rounded shadow dark:bg-gray-800">
             <h3 className="text-xl font-bold mb-2">질문 게시판</h3>
             <p className="mb-4">궁금한 점을 질문하고 답변을 받아보세요.</p>
-            <Link href="/qna" className="text-orange-500 hover:underline">
+            <Link to="/qna" className="text-orange-500 hover:underline">
               바로가기
             </Link>
           </div>
